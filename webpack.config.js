@@ -1,6 +1,5 @@
 const path = require('path')
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
-const PugPlugin = require('pug-plugin')
 
 module.exports = {
 	name: 'repro',
@@ -23,11 +22,6 @@ module.exports = {
 	},
 	plugins: [
 		new ForkTsCheckerWebpackPlugin(),
-		new PugPlugin({
-			modules: [
-				PugPlugin.extractCss()
-			],
-		}),
 	],
 	resolve: {
 		extensions: ['.ts', '.js'],
@@ -46,14 +40,12 @@ module.exports = {
 			},
 			{
 				test: /\.pug$/,
-				loader: PugPlugin.loader,
+				loader: '@webdiscus/pug-loader',
 			},
 			{
-				test: /\.css$/i,
-				use: [
-					'css-loader',
-					'postcss-loader',
-				],
+				test: /\.css$/,
+				type: 'asset/resource',
+				use: 'postcss-loader',
 			},
 		],
 	},
