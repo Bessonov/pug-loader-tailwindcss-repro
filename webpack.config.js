@@ -23,17 +23,12 @@ module.exports = {
 	},
 	plugins: [
 		new ForkTsCheckerWebpackPlugin(),
-		// didn't help
-		// new PugPlugin({
-		// 	verbose: true,
-		// 	modules: [
-		// 		PugPlugin.extractHtml({
-		// 			test: /\.(pug)$/,
-		// 			filename: 'assets/css/[name].[contenthash:8].html',
-		// 		}),
-		// 	],
-		// }),
-	].filter(Boolean),
+		new PugPlugin({
+			modules: [
+				PugPlugin.extractCss()
+			],
+		}),
+	],
 	resolve: {
 		extensions: ['.ts', '.js'],
 	},
@@ -51,11 +46,14 @@ module.exports = {
 			},
 			{
 				test: /\.pug$/,
+				loader: PugPlugin.loader,
+			},
+			{
+				test: /\.css$/i,
 				use: [
-					{
-						loader: PugPlugin.loader,
-					},
-				]
+					'css-loader',
+					'postcss-loader',
+				],
 			},
 		],
 	},
